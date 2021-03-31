@@ -1,0 +1,148 @@
+---
+title: "Regression example - apartments data"
+author: "Anna Gierlak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Regression example - apartments data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.
+
+```{r}
+library(rSAFE)
+head(apartments)
+```
+
+## Building a black-box model
+
+First we fit a random forest model to the original `apartments` dataset - this is our complex model that will serve us as a surrogate.
+
+```{r}
+library(randomForest)
+set.seed(111)
+model_rf1 <- randomForest(m2.price ~ construction.year + surface + floor + no.rooms + district, data = apartments)
+```
+
+## Creating an explainer
+
+We also create an `explainer` object that will be used later to create new variables and at the end to compare models performance.
+
+```{r}
+library(DALEX)
+explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1", verbose = FALSE)
+explainer_rf1
+```
+
+## Creating a safe_extractor
+
+Now, we create a `safe_extractor` object using `rSAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
+
+```{r}
+safe_extractor <- safe_extraction(explainer_rf1, penalty = 25, verbose = FALSE)
+```
+
+Now, let's print summary for the new object we have just created.
+
+```{r}
+print(safe_extractor)
+```
+
+We can see transformation propositions for all variables in our dataset. 
+
+In the plot below we can see which points have been chosen to be the breakpoints for a particular variable: 
+
+```{r, fig.width=7}
+plot(safe_extractor, variable = "construction.year")
+```
+
+For factor variables we can observe in which order levels have been merged and what is the optimal clustering:
+
+```{r, fig.width=7}
+plot(safe_extractor, variable = "district")
+```
+
+## Transforming data
+
+Now we can use our `safe_extractor` object to create new categorical features in the given dataset.
+
+```{r}
+data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbose = FALSE)
+```
+
+```{r, echo = FALSE}
+knitr::kable(head(data1))
+```
+
+We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
+
+```{r, fig.width=6}
+vars <- safely_select_variables(safe_extractor, data1, which_y = "m2.price", verbose = FALSE)
+data1 <- data1[,c("m2.price", vars)]
+print(vars)
+```
+
+It can be observed that for some features the original form was preferred and for others the transformed one.
+
+Here are the first few rows for our data after feature selection:
+
+```{r, echo = FALSE}
+knitr::kable(head(data1))
+```
+
+Now, we perform transformations on another data that will be used later in explainers.
+
+```{r, fig.width=6}
+data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c("m2.price", vars)]
+```
+
+## Creating white-box models on original and transformed datasets
+
+Let's fit the models to data containing newly created columns. We consider a linear model as a white-box model.
+
+```{r}
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2", verbose = FALSE)
+set.seed(111)
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2", verbose = FALSE)
+```
+
+Moreover, we create a linear model based on original `apartments` dataset and its corresponding explainer in order to check if our methodology improves results.
+
+```{r}
+model_lm1 <- lm(m2.price ~ ., data = apartments)
+explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1", verbose = FALSE)
+```
+
+## Comparing models performance
+
+Final step is the comparison of all the models we have created.
+
+```{r}
+mp_lm1 <- model_performance(explainer_lm1)
+mp_rf1 <- model_performance(explainer_rf1)
+mp_lm2 <- model_performance(explainer_lm2)
+mp_rf2 <- model_performance(explainer_rf2)
+```
+
+```{r, fig.width=7, fig.height=6}
+plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
+```
+
+In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.
+
+
+
+
