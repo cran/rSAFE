@@ -12,10 +12,11 @@
 
 <meta name="author" content="Anna Gierlak" />
 
-<meta name="date" content="2021-03-29" />
+<meta name="date" content="2022-02-08" />
 
 <title>Classification example - HR data</title>
 
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -27,28 +28,37 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -57,9 +67,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -117,187 +127,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -311,29 +141,29 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Classification example - HR data</h1>
 <h4 class="author">Anna Gierlak</h4>
-<h4 class="date">2021-03-29</h4>
+<h4 class="date">2022-02-08</h4>
 
 
 
 <p>In this vignette we demonstrate an application of the <code>rSAFE</code> package to the <code>HR_data</code> set. The dataset contains information from a Human Resources department about employees and may be used in the classification task of predicting whether an employee is likely to leave the company. The data comes from the Kaggle competition “Human Resources Analytics” and is available in <code>breakDown</code> and <code>rSAFE</code> packages.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(rSAFE)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">head</span>(HR_data)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co">#&gt;   satisfaction_level last_evaluation number_project average_monthly_hours</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co">#&gt; 1               0.38            0.53              2                   157</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co">#&gt; 2               0.80            0.86              5                   262</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="co">#&gt; 3               0.11            0.88              7                   272</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="co">#&gt; 4               0.72            0.87              5                   223</span></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="co">#&gt; 5               0.37            0.52              2                   159</span></a>
-<a class="sourceLine" id="cb1-9" title="9"><span class="co">#&gt; 6               0.41            0.50              2                   153</span></a>
-<a class="sourceLine" id="cb1-10" title="10"><span class="co">#&gt;   time_spend_company work_accident left promotion_last_5years sales salary</span></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co">#&gt; 1                  3             0    1                     0 sales    low</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co">#&gt; 2                  6             0    1                     0 sales medium</span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co">#&gt; 3                  4             0    1                     0 sales medium</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co">#&gt; 4                  5             0    1                     0 sales    low</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co">#&gt; 5                  3             0    1                     0 sales    low</span></a>
-<a class="sourceLine" id="cb1-16" title="16"><span class="co">#&gt; 6                  3             0    1                     0 sales    low</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rSAFE)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HR_data)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   satisfaction_level last_evaluation number_project average_monthly_hours</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1               0.38            0.53              2                   157</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2               0.80            0.86              5                   262</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3               0.11            0.88              7                   272</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4               0.72            0.87              5                   223</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5               0.37            0.52              2                   159</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6               0.41            0.50              2                   153</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   time_spend_company work_accident left promotion_last_5years sales salary</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                  3             0    1                     0 sales    low</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                  6             0    1                     0 sales medium</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                  4             0    1                     0 sales medium</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                  5             0    1                     0 sales    low</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                  3             0    1                     0 sales    low</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                  3             0    1                     0 sales    low</span></span></code></pre></div>
 <p>As explanatory variables we use all available in the dataset except for  which specifies department in which the employee works for.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">data &lt;-<span class="st"> </span>HR_data[, <span class="kw">colnames</span>(HR_data) <span class="op">!=</span><span class="st"> &quot;sales&quot;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> HR_data[, <span class="fu">colnames</span>(HR_data) <span class="sc">!=</span> <span class="st">&quot;sales&quot;</span>]</span></code></pre></div>
 <p>In order to ensure the final errors are computed on the data which has not been seen by an appropriate model, we divide our data as follows:</p>
 <ul>
 <li><code>data1</code> - the data which initial black-box and white-box models are fitted to,</li>
@@ -341,88 +171,88 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><code>data3</code> - the data for which transformations and feature selection are performed, used also as a training set for new models,</li>
 <li><code>data4</code> - the data used as a test set for the new models, allowing to compare the results. Before splitting the data, we first shuffle rows to ensure they are evenly distributed.</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">set.seed</span>(<span class="dv">111</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2">data &lt;-<span class="st"> </span>data[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data)),]</a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4">data1 &lt;-<span class="st"> </span>data[<span class="dv">1</span><span class="op">:</span><span class="dv">4000</span>,]</a>
-<a class="sourceLine" id="cb3-5" title="5">data2 &lt;-<span class="st"> </span>data[<span class="dv">4001</span><span class="op">:</span><span class="dv">8000</span>,]</a>
-<a class="sourceLine" id="cb3-6" title="6">data3 &lt;-<span class="st"> </span>data[<span class="dv">8001</span><span class="op">:</span><span class="dv">12000</span>,]</a>
-<a class="sourceLine" id="cb3-7" title="7">data4 &lt;-<span class="st"> </span>data[<span class="dv">12001</span><span class="op">:</span><span class="dv">14999</span>,]</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data)),]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> data[<span class="dv">1</span><span class="sc">:</span><span class="dv">4000</span>,]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> data[<span class="dv">4001</span><span class="sc">:</span><span class="dv">8000</span>,]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>data3 <span class="ot">&lt;-</span> data[<span class="dv">8001</span><span class="sc">:</span><span class="dv">12000</span>,]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>data4 <span class="ot">&lt;-</span> data[<span class="dv">12001</span><span class="sc">:</span><span class="dv">14999</span>,]</span></code></pre></div>
 <div id="building-a-black-box-model" class="section level2">
 <h2>Building a black-box model</h2>
 <p>In this example we decide to use the GBM model as a black-box - it will serve us as a surrogate.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">n.trees &lt;-<span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="kw">library</span>(gbm)</a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="kw">set.seed</span>(<span class="dv">111</span>)</a>
-<a class="sourceLine" id="cb4-4" title="4">model_xgb1 &lt;-<span class="st"> </span><span class="kw">gbm</span>(left <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1, <span class="dt">distribution =</span> <span class="st">&quot;bernoulli&quot;</span>, <span class="dt">n.trees =</span> n.trees)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n.trees <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gbm)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>model_xgb1 <span class="ot">&lt;-</span> <span class="fu">gbm</span>(left <span class="sc">~</span> ., <span class="at">data =</span> data1, <span class="at">distribution =</span> <span class="st">&quot;bernoulli&quot;</span>, <span class="at">n.trees =</span> n.trees)</span></code></pre></div>
 </div>
 <div id="creating-an-explainer" class="section level2">
 <h2>Creating an explainer</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables. For classification problems we need to specify <code>predict_function</code> - a function that may be used for model predictions and returns a single numerical value for each observation.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">library</span>(DALEX)</a>
-<a class="sourceLine" id="cb5-2" title="2">predict_function &lt;-<span class="st"> </span><span class="cf">function</span>(model, x) <span class="kw">predict</span>(model, x, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">n.trees =</span> n.trees)</a>
-<a class="sourceLine" id="cb5-3" title="3">explainer_xgb1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_xgb1, <span class="dt">data =</span> data2[,<span class="op">-</span><span class="dv">7</span>], <span class="dt">y =</span> data2<span class="op">$</span>left, <span class="dt">predict_function =</span> predict_function, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DALEX)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>predict_function <span class="ot">&lt;-</span> <span class="cf">function</span>(model, x) <span class="fu">predict</span>(model, x, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">n.trees =</span> n.trees)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>explainer_xgb1 <span class="ot">&lt;-</span> <span class="fu">explain</span>(model_xgb1, <span class="at">data =</span> data2[,<span class="sc">-</span><span class="dv">7</span>], <span class="at">y =</span> data2<span class="sc">$</span>left, <span class="at">predict_function =</span> predict_function, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="creating-a-safe_extractor" class="section level2">
 <h2>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">safe_extractor &lt;-<span class="st"> </span><span class="kw">safe_extraction</span>(explainer_xgb1, <span class="dt">penalty =</span> <span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>safe_extractor <span class="ot">&lt;-</span> <span class="fu">safe_extraction</span>(explainer_xgb1, <span class="at">penalty =</span> <span class="dv">20</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">print</span>(safe_extractor)</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt; Variable &#39;satisfaction_level&#39; - selected intervals:</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt;  (-Inf, 0.48]</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;      (0.48, 0.9193878]</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;      (0.9193878, Inf)</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; Variable &#39;last_evaluation&#39; - selected intervals:</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  (-Inf, 0.42]</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;      (0.42, 0.57]</span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;      (0.57, 0.8]</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;      (0.8, Inf)</span></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt; Variable &#39;number_project&#39; - selected intervals:</span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  (-Inf, 4]</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;      (4, Inf)</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt; Variable &#39;average_monthly_hours&#39; - selected intervals:</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt;  (-Inf, 115.6122]</span></a>
-<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt;      (115.6122, 160]</span></a>
-<a class="sourceLine" id="cb7-17" title="17"><span class="co">#&gt;      (160, 214]</span></a>
-<a class="sourceLine" id="cb7-18" title="18"><span class="co">#&gt;      (214, Inf)</span></a>
-<a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; Variable &#39;time_spend_company&#39; - selected intervals:</span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;  (-Inf, 3]</span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt;      (3, Inf)</span></a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt; Variable &#39;work_accident&#39; - no transformation suggested.</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt; Variable &#39;promotion_last_5years&#39; - no transformation suggested.</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt; Variable &#39;salary&#39; - created levels:</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;  high -&gt;  high </span></a>
-<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  low, medium -&gt;  low_medium</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(safe_extractor)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;satisfaction_level&#39; - selected intervals:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  (-Inf, 0.48]</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (0.48, 0.9193878]</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (0.9193878, Inf)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;last_evaluation&#39; - selected intervals:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  (-Inf, 0.42]</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (0.42, 0.57]</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (0.57, 0.8]</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (0.8, Inf)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;number_project&#39; - selected intervals:</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  (-Inf, 4]</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (4, Inf)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;average_monthly_hours&#39; - selected intervals:</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  (-Inf, 115.6122]</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (115.6122, 160]</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (160, 214]</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (214, Inf)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;time_spend_company&#39; - selected intervals:</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  (-Inf, 3]</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (3, Inf)</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;work_accident&#39; - no transformation suggested.</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;promotion_last_5years&#39; - no transformation suggested.</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variable &#39;salary&#39; - created levels:</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  high -&gt;  high </span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  low, medium -&gt;  low_medium</span></span></code></pre></div>
 <p>We can see transformation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">plot</span>(safe_extractor, <span class="dt">variable =</span> <span class="st">&quot;last_evaluation&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(safe_extractor, <span class="at">variable =</span> <span class="st">&quot;last_evaluation&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>For factor variables we can observe in which order levels have been merged and what is the optimal clustering:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">plot</span>(safe_extractor, <span class="dt">variable =</span> <span class="st">&quot;salary&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(safe_extractor, <span class="at">variable =</span> <span class="st">&quot;salary&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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oJEYTjmBRmI45QQaieGUE2gkmlO+uGtqeC9OoJFoTjmBokNzygkUHZpTngW6MlmpjKbb3a1WszLRah0aLenF+WaRSCpaOu/qxM37P993Qz375/DWI/VXb9meHt9dcKiDBVqgbdhIe9Dmlum069wyvXjn9Mqzz287mu5LenECRVFZoNuO5vcrkxOLd7330PRstl0KAkVRPYGmz57N0ZXJR7LPouUgUBSVBToylR/iW81tz020Zm98sLTzegJFUfmhPTuFT2fuS+Mp1WaltCM8gaKw7mWm5FBqc2m8tCM8gUIbgUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIaX30DSYMFuq7Gtf9VYEAECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkFvlmksUnfMQFHgwW6LvagGD4ChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTQChTS+WQSSBgt0XexBMXwECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkECmkEiqIu/XK2777/YUEEiqKuUiOBQgeBQtqlX/5sNBpn8iov/9449dev51Z/VFyRbxaBuU4In3zzw5f1L77/6pNvv/705Hf1T0+mh50f/a/fLALkLv18Jj+opz8XT59rtc6fPrf6o+IvTqAoKg+xHej5H/9OD7ND/FkChQgChbSeQPNDfLohUOjoCfTy77+lE3kChZKeQPPLTH8SKJRdzD6IloVAUaKLp862/vnjpxJfkUBRpvONRqPMPgkU2ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0ggU0v4Fn8rI3npgHcoAAAAASUVORK5CYII=" /><!-- --></p>
 </div>
 <div id="transforming-data" class="section level2">
 <h2>Transforming data</h2>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">data3_trans &lt;-<span class="st"> </span><span class="kw">safely_transform_data</span>(safe_extractor, data3, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data3_trans <span class="ot">&lt;-</span> <span class="fu">safely_transform_data</span>(safe_extractor, data3, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table>
 <colgroup>
-<col width="2%"></col>
-<col width="7%"></col>
-<col width="6%"></col>
-<col width="5%"></col>
-<col width="8%"></col>
-<col width="7%"></col>
-<col width="5%"></col>
-<col width="1%"></col>
-<col width="8%"></col>
-<col width="8%"></col>
-<col width="7%"></col>
-<col width="7%"></col>
-<col width="9%"></col>
-<col width="8%"></col>
-<col width="4%"></col>
+<col width="2%" />
+<col width="7%" />
+<col width="6%" />
+<col width="5%" />
+<col width="8%" />
+<col width="7%" />
+<col width="5%" />
+<col width="1%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="7%" />
+<col width="9%" />
+<col width="8%" />
+<col width="4%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -549,26 +379,26 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">selected_variables &lt;-<span class="st"> </span><span class="kw">safely_select_variables</span>(safe_extractor, data3_trans, <span class="dt">which_y =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb11-2" title="2">data3_trans_sel &lt;-<span class="st"> </span>data3_trans[,<span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, selected_variables)]</a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="kw">print</span>(selected_variables)</a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; [1] &quot;work_accident&quot;             &quot;promotion_last_5years&quot;    </span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt; [3] &quot;salary&quot;                    &quot;satisfaction_level_new&quot;   </span></a>
-<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; [5] &quot;last_evaluation_new&quot;       &quot;number_project_new&quot;       </span></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt; [7] &quot;average_monthly_hours_new&quot; &quot;time_spend_company_new&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>selected_variables <span class="ot">&lt;-</span> <span class="fu">safely_select_variables</span>(safe_extractor, data3_trans, <span class="at">which_y =</span> <span class="st">&quot;left&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>data3_trans_sel <span class="ot">&lt;-</span> data3_trans[,<span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, selected_variables)]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(selected_variables)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;work_accident&quot;             &quot;promotion_last_5years&quot;    </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;salary&quot;                    &quot;satisfaction_level_new&quot;   </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;last_evaluation_new&quot;       &quot;number_project_new&quot;       </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] &quot;average_monthly_hours_new&quot; &quot;time_spend_company_new&quot;</span></span></code></pre></div>
 <p>It can be observed that for some features the original form was preferred and for others the transformed one.</p>
 <p>Here are the first few rows for our data after feature selection:</p>
 <table style="width:100%;">
 <colgroup>
-<col width="3%"></col>
-<col width="8%"></col>
-<col width="13%"></col>
-<col width="4%"></col>
-<col width="14%"></col>
-<col width="12%"></col>
-<col width="11%"></col>
-<col width="16%"></col>
-<col width="14%"></col>
+<col width="3%" />
+<col width="8%" />
+<col width="13%" />
+<col width="4%" />
+<col width="14%" />
+<col width="12%" />
+<col width="11%" />
+<col width="16%" />
+<col width="14%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -653,44 +483,44 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Now, we perform transformations on another data that will be used later to compare models performance.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">data4_trans &lt;-<span class="st"> </span><span class="kw">safely_transform_data</span>(safe_extractor, data4, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb12-2" title="2">data4_trans_sel &lt;-<span class="st"> </span>data4_trans[,<span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, selected_variables)]</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data4_trans <span class="ot">&lt;-</span> <span class="fu">safely_transform_data</span>(safe_extractor, data4, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data4_trans_sel <span class="ot">&lt;-</span> data4_trans[,<span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, selected_variables)]</span></code></pre></div>
 </div>
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2>Creating white-box models on original and transformed datasets</h2>
 <p>Let’s fit the models to data containing newly created columns. We consider a generalized linear model (glm) as a white-box model.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">model_lr2 &lt;-<span class="st"> </span><span class="kw">glm</span>(left <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data3_trans_sel, <span class="dt">family =</span> <span class="kw">binomial</span>())</a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="kw">set.seed</span>(<span class="dv">111</span>)</a>
-<a class="sourceLine" id="cb13-3" title="3">model_xgb2 &lt;-<span class="st"> </span><span class="kw">gbm</span>(left <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data3_trans_sel, <span class="dt">distribution =</span> <span class="st">&quot;bernoulli&quot;</span>, <span class="dt">n.trees =</span> n.trees)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model_lr2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(left <span class="sc">~</span> ., <span class="at">data =</span> data3_trans_sel, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>model_xgb2 <span class="ot">&lt;-</span> <span class="fu">gbm</span>(left <span class="sc">~</span> ., <span class="at">data =</span> data3_trans_sel, <span class="at">distribution =</span> <span class="st">&quot;bernoulli&quot;</span>, <span class="at">n.trees =</span> n.trees)</span></code></pre></div>
 <p>Moreover, we create a glm model based on original data in order to check if our methodology improves results.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">model_lr1 &lt;-<span class="st"> </span><span class="kw">glm</span>(left <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1, <span class="dt">family =</span> <span class="kw">binomial</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_lr1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(left <span class="sc">~</span> ., <span class="at">data =</span> data1, <span class="at">family =</span> <span class="fu">binomial</span>())</span></code></pre></div>
 </div>
 <div id="comparing-models-performance" class="section level2">
 <h2>Comparing models performance</h2>
 <p>Final step is the comparison of all four models we have created. For each of them we make predictions on the relevant test set, i.e. we use <code>model_lr1</code> and <code>model_xgb1</code> to predict the output for <code>data2</code> and <code>model_lr2</code> and <code>model_xgb2</code> to predict the output for <code>data4</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">pred_lr1 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(model_lr1, data2, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>))</a>
-<a class="sourceLine" id="cb15-2" title="2">pred_xgb1 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(model_xgb1, data2, <span class="dt">n.trees =</span> n.trees, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>))</a>
-<a class="sourceLine" id="cb15-3" title="3">pred_lr2 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(model_lr2, data4_trans_sel, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>))</a>
-<a class="sourceLine" id="cb15-4" title="4">pred_xgb2 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">predict</span>(model_xgb2, data4_trans_sel, <span class="dt">n.trees =</span> n.trees, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred_lr1 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(model_lr1, data2, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pred_xgb1 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(model_xgb1, data2, <span class="at">n.trees =</span> n.trees, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pred_lr2 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(model_lr2, data4_trans_sel, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>pred_xgb2 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(model_xgb2, data4_trans_sel, <span class="at">n.trees =</span> n.trees, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>))</span></code></pre></div>
 <p>The performance of the models may then be evaluated based on confusion matrices with relative percentages obtained via the <code>confusion_matrix</code> function:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">confusion_matrix &lt;-<span class="st"> </span><span class="cf">function</span>(y_true, y_pred) {</a>
-<a class="sourceLine" id="cb16-2" title="2">  cm &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">pred_0 =</span> <span class="kw">c</span>(<span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>y_pred<span class="op">==</span><span class="dv">0</span>)<span class="op">/</span><span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb16-3" title="3">                              <span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>y_pred<span class="op">==</span><span class="dv">0</span>)<span class="op">/</span><span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">1</span>)),</a>
-<a class="sourceLine" id="cb16-4" title="4">                   <span class="dt">pred_1 =</span> <span class="kw">c</span>(<span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>y_pred<span class="op">==</span><span class="dv">1</span>)<span class="op">/</span><span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb16-5" title="5">                              <span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>y_pred<span class="op">==</span><span class="dv">1</span>)<span class="op">/</span><span class="kw">sum</span>(y_true<span class="op">==</span><span class="dv">1</span>)))</a>
-<a class="sourceLine" id="cb16-6" title="6">  cm &lt;-<span class="st"> </span><span class="kw">apply</span>(cm, <span class="dt">MARGIN =</span> <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="kw">round</span>(x, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb16-7" title="7">  <span class="kw">rownames</span>(cm) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;actual_0&quot;</span>, <span class="st">&quot;actual_1&quot;</span>)</a>
-<a class="sourceLine" id="cb16-8" title="8">  cm</a>
-<a class="sourceLine" id="cb16-9" title="9">}</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>confusion_matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(y_true, y_pred) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  cm <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pred_0 =</span> <span class="fu">c</span>(<span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> y_pred<span class="sc">==</span><span class="dv">0</span>)<span class="sc">/</span><span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">0</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> y_pred<span class="sc">==</span><span class="dv">0</span>)<span class="sc">/</span><span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">1</span>)),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pred_1 =</span> <span class="fu">c</span>(<span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> y_pred<span class="sc">==</span><span class="dv">1</span>)<span class="sc">/</span><span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">0</span>),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> y_pred<span class="sc">==</span><span class="dv">1</span>)<span class="sc">/</span><span class="fu">sum</span>(y_true<span class="sc">==</span><span class="dv">1</span>)))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  cm <span class="ot">&lt;-</span> <span class="fu">apply</span>(cm, <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">round</span>(x, <span class="dv">2</span>))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(cm) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;actual_0&quot;</span>, <span class="st">&quot;actual_1&quot;</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  cm</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>GBM models give the following results:</p>
 <ul>
 <li>for the original data:</li>
 </ul>
 <table style="width:71%;">
 <colgroup>
-<col width="20%"></col>
-<col width="25%"></col>
-<col width="25%"></col>
+<col width="20%" />
+<col width="25%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -717,9 +547,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul>
 <table style="width:71%;">
 <colgroup>
-<col width="20%"></col>
-<col width="25%"></col>
-<col width="25%"></col>
+<col width="20%" />
+<col width="25%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -747,9 +577,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul>
 <table style="width:71%;">
 <colgroup>
-<col width="20%"></col>
-<col width="25%"></col>
-<col width="25%"></col>
+<col width="20%" />
+<col width="25%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -776,9 +606,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul>
 <table style="width:71%;">
 <colgroup>
-<col width="20%"></col>
-<col width="25%"></col>
-<col width="25%"></col>
+<col width="20%" />
+<col width="25%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
